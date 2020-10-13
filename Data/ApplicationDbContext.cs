@@ -17,5 +17,7 @@ namespace MeetingScheduler.Data
             IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
         {
         }
+
+        public DbSet<Meeting> Meeting { get; set; }
     }
 }
