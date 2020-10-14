@@ -3,6 +3,7 @@ import authService from './api-authorization/AuthorizeService';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
+import { Link } from "react-router-dom";
 
 export function Agenda() {
     const [isLoading, setIsLoading] = useState(true);
@@ -47,7 +48,7 @@ export function Agenda() {
         <div>
             <h1>Agenda</h1>
 
-            <button className="btn btn-primary">New Meeting</button>
+            <Link to="/new-meeting" className="btn btn-primary">New Meeting</Link>
 
             <input placeholder="Search meetings"/>
 
