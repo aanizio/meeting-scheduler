@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MeetingScheduler.Data;
 using MeetingScheduler.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace MeetingScheduler.Controllers
 {
@@ -26,16 +27,16 @@ namespace MeetingScheduler.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Meeting> Get()
+        public async Task<IEnumerable<Meeting>> Get() =>
+            await _context.Meeting.ToListAsync();
+
+        [HttpPost]
+        // [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Post(Meeting meeting)
         {
-            return _context.Meeting.AsEnumerable();
-            // var rng = new Random();
-            // return Enumerable.Range(1, 5)
-            //     .Select(index => new Meeting() {
-            //         Title = "test",
-            //         Start = DateTime.Now.AddDays(rng.Next(-20, 55))
-            //     })
-            //     .ToArray();
+            _context.Add(meeting);
+            await _context.SaveChangesAsync();
+            return CreatedAtAction(nameof(Post), new { id = meeting.Id }, meeting);
         }
     }
 }
