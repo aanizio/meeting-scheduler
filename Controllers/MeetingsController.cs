@@ -26,9 +26,13 @@ namespace MeetingScheduler.Controllers
             _context = context;
         }
 
-        [HttpGet]
+        [HttpGet("")]
         public async Task<IEnumerable<Meeting>> Get() =>
             await _context.Meeting.ToListAsync();
+
+        [HttpGet("{title}")]
+        public async Task<IEnumerable<Meeting>> Get(string title) =>
+            await _context.Meeting.Where(m => m.Title.Contains(title)).ToListAsync();
 
         [HttpPost]
         // [ValidateAntiForgeryToken]

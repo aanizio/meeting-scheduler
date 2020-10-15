@@ -49,8 +49,7 @@ export function Agenda() {
             <h1>Agenda</h1>
 
             <Link to="/new-meeting" className="btn btn-primary">New Meeting</Link>
-
-            <input placeholder="Search meetings"/>
+            <Link to="/search" className="btn btn-primary">Search</Link>
 
             {content}
         </div>
