@@ -1,20 +1,22 @@
 import React, { useState } from 'react';
 import authService from './api-authorization/AuthorizeService';
 import DateFnsUtils from '@date-io/date-fns';
-import { format } from 'date-fns';
+import { format, addHours } from 'date-fns';
 import { DatePicker, TimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
+import { useParams } from 'react-router-dom';
 
 export function NewMeeting() {
+    const { datetime } = useParams();
     const [title, setTitle] = useState();
-    const [date, setDate] = useState(new Date());
-    const [startTime, setStartTime] = useState(new Date());
-    const [endTime, setEndTime] = useState(new Date());
+    const [selDate, setSelDate] = useState(datetime ? new Date(datetime) : new Date());
+    const [startTime, setStartTime] = useState(selDate);
+    const [endTime, setEndTime] = useState(addHours(selDate, 1));
 
     const handleSubmit = (evt) => {
         evt.preventDefault();
         const postData = async() => {
             const token = await authService.getAccessToken();
-            const _date = format(date, 'yyyy-MM-dd');
+            const _date = format(selDate, 'yyyy-MM-dd');
             const _startTime = format(startTime, 'HH:mm:ss');
             const _endTime = format(endTime, 'HH:mm:ss');
             const data = {
@@ -45,7 +47,7 @@ export function NewMeeting() {
             <input name="title" placeholder="Enter meeting title" 
                 onChange={handleTitleChange} value={title} />
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <DatePicker value={date} onChange={setDate} />
+                <DatePicker value={selDate} onChange={setSelDate} />
                 <TimePicker value={startTime} onChange={setStartTime} />
                 <TimePicker value={endTime} onChange={setEndTime} />
             </MuiPickersUtilsProvider>

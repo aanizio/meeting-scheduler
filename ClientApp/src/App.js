@@ -21,7 +21,7 @@ export default class App extends Component {
       <Layout>
         <Route exact path='/' component={Home} />
         <AuthorizeRoute exact path='/agenda' component={Agenda} />
-        <AuthorizeRoute exact path='/new-meeting' component={NewMeeting} />
+        <AuthorizeRoute exact path='/new-meeting/:datetime?' component={NewMeeting} />
         <AuthorizeRoute exact path='/search' component={Search} />
         <Route path='/counter' component={Counter} />
         <AuthorizeRoute path='/fetch-data' component={FetchData} />

@@ -3,9 +3,11 @@ import authService from './api-authorization/AuthorizeService';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
-import { Link } from "react-router-dom";
+import interactionPlugin from "@fullcalendar/interaction";
+import { Link, useHistory } from "react-router-dom";
 
 export function Agenda() {
+    const history = useHistory();
     const [isLoading, setIsLoading] = useState(true);
     const [isError, setIsError] = useState(false);
     const [meetings, setMeetings] = useState([]);
@@ -27,6 +29,11 @@ export function Agenda() {
         fetchData();
     }, []);
 
+    const handleDateClick = (info) => {
+        const isoDate = info.date.toISOString();
+        history.push(`/new-meeting/${isoDate}`);
+    };
+
     let content;
     if (isError)
         content = <p>Error fetching data</p>;
@@ -34,7 +41,8 @@ export function Agenda() {
         content = <p>Loading...</p>;
     else
         content = <FullCalendar
-            plugins={[dayGridPlugin, timeGridPlugin]}
+            plugins={[ dayGridPlugin, timeGridPlugin, interactionPlugin ]}
+            dateClick={handleDateClick}
             initialView="dayGridMonth"
             initialEvents={meetings}
             headerToolbar={{
